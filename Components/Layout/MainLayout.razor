@@ -1,0 +1,59 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
+            <HxGrid TItem="EmployeeDto"
+                    DataProvider="GetGridData"
+                    PageSize="5"
+                    Responsive="true">
+                <Columns>
+                    <HxGridColumn HeaderText="Name" ItemTextSelector="employee => employee.Name" />
+                    <HxGridColumn HeaderText="Phone" ItemTextSelector="employee => employee.Phone" />
+                    <HxGridColumn HeaderText="Salary" ItemTextSelector="@(employee => employee.Salary.ToString("c0"))" />
+                    <HxGridColumn HeaderText="Position" ItemTextSelector="employee => employee.Position" />
+                    <HxGridColumn HeaderText="Location" ItemTextSelector="employee => employee.Location" />
+                </Columns>
+            </HxGrid>
+        </article>
+    </main>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+
+@code {
+    private GridUserState gridUserState = new();
+    private string serializedGridUserState; // replace this field with your own storage (e.g. local storage or database)
+
+    private async Task<GridDataProviderResult<EmployeeDto>> GetGridData(GridDataProviderRequest<EmployeeDto> request)
+    {
+        await Task.Delay(500);
+        return new GridDataProviderResult<EmployeeDto>()
+            {
+                Data = new List<EmployeeDto>(),
+                TotalCount = 0,
+            };
+    }
+
+    class EmployeeDto
+    {
+        public string Name { get; set; }
+        public string Phone { get; set; }
+        public int Salary { get; set; }
+        public string Position { get; set; }
+        public string Location { get; set; }
+    }
+}
